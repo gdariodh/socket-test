@@ -16,7 +16,7 @@ const Wrapper = () => {
   // }, [ready, send]); // make sure to include send in dependency array
 
   return (
-    <div>
+    <div className="w-full h-full h-screen">
       {/* <div>
         Ready: {JSON.stringify(ready)}, Value: {val}
       </div> */}

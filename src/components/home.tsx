@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Cursor } from './cursor';
 import useWebSocket from 'react-use-websocket';
 import throttle from 'lodash.throttle';
@@ -6,17 +6,45 @@ import throttle from 'lodash.throttle';
 const renderCursors = (users: any) => {
   return Object.keys(users).map((uuid) => {
     const user = users[uuid];
+    const userColor = user?.color || 'red';
+
     return (
-      <Cursor key={uuid} userId={uuid} point={[user.state.x, user.state.y]} />
+      <Cursor
+        key={uuid}
+        userId={uuid}
+        point={[user.state.x, user.state.y]}
+        userColor={userColor}
+      />
     );
   });
 };
 
 const renderUsersList = (users) => {
   return (
-    <ul>
+    <ul className="flex flex-row gap-2">
       {Object.keys(users).map((uuid) => {
-        return <li key={uuid}>{JSON.stringify(users[uuid])}</li>;
+        const user = users[uuid];
+
+        console.log({ user });
+
+        const firstLetter = user.username[0].toUpperCase();
+        const userColor = user?.color || 'red';
+
+        return (
+          <li key={uuid} className="flex flex-col gap-2">
+            <div
+              style={{ backgroundColor: userColor }}
+              className="flex w-[32px] h-[32px] text-white flex-col items-center justify-center p-4 rounded-full"
+            >
+              {firstLetter}
+            </div>
+            <div>
+              <p>state:</p>
+
+              <pre>{JSON.stringify(user.state, null, 2)}</pre>
+            </div>
+          </li>
+        );
       })}
     </ul>
   );
@@ -47,10 +75,12 @@ export function Home({ username }: any) {
 
   if (lastJsonMessage) {
     return (
-      <>
-        {renderUsersList(lastJsonMessage)}
-        {renderCursors(lastJsonMessage)}
-      </>
+      <div>
+        <div className="absolute top-0 right-0 px-12 py-4 border rounded-lg">
+          {renderUsersList(lastJsonMessage)}
+        </div>
+        <div>{renderCursors(lastJsonMessage)}</div>
+      </div>
     );
   }
 }
