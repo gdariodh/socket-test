@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { usePerfectCursor } from '../hooks/use-cursor';
 
-export function Cursor({ userId, point, userColor }) {
+interface ICursorProps {
+  userId: string;
+  point: [number, number];
+  userColor?: string;
+}
+
+export function Cursor({ userId, point, userColor }: ICursorProps) {
   const rCursor = React.useRef(null);
 
   const animateCursor = React.useCallback((point) => {
