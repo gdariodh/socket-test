@@ -1,9 +1,9 @@
-import { Home } from './components/home';
-import { WebSocketProvider } from './context/ws-context';
+import { HomeWs } from './components/home-ws';
+
 function App() {
   return (
     <div>
-      <Home />
+      <HomeWs />
     </div>
   );
 }
