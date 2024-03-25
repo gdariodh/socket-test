@@ -19,7 +19,6 @@ export function HomeWs() {
         action: 'subscribe',
         topic: 'cursors',
         message: JSON.stringify({
-          ...positions,
           [id.current]: {
             x: 0,
             y: 0,
