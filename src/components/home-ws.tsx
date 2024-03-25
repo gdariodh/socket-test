@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { uid } from 'uid';
 import useWebSocket from 'react-use-websocket';
 import throttle from 'lodash.throttle';
@@ -15,7 +15,7 @@ export function HomeWs() {
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(WS_URL, {
     share: true,
     onOpen: (event) => {
-      sendJsonMessage({
+      sendJsonMessageThrottled.current({
         action: 'subscribe',
         topic: 'cursors',
         message: JSON.stringify({
@@ -25,6 +25,7 @@ export function HomeWs() {
           },
         }),
       });
+      setPositions({});
     },
     onMessage: (event) => {
       try {
@@ -40,6 +41,7 @@ export function HomeWs() {
       }
     },
   });
+
   const sendJsonMessageThrottled = useRef(throttle(sendJsonMessage, THROTTLE));
 
   const handleMouseMove = (e) => {
@@ -57,6 +59,18 @@ export function HomeWs() {
       message: JSON.stringify(positions),
     });
   };
+
+  // we add this useEffect to avoid the duplicated sockets,
+  // this problem is caused by the reload of the page, because the id is generated again by uid()
+  // and we can avoid this behavior with the idStorage
+  useEffect(() => {
+    const idStorage = localStorage.getItem('id');
+    if (idStorage) {
+      id.current = idStorage;
+    } else {
+      localStorage.setItem('id', id.current);
+    }
+  }, []);
 
   if (lastJsonMessage) {
     return (
