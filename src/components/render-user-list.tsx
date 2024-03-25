@@ -1,3 +1,5 @@
+import React from 'react';
+
 const RenderUserList = ({ users }: { users: any }) => {
   return (
     <ul className="flex flex-row gap-2">

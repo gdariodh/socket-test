@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { uid } from 'uid';
 import useWebSocket from 'react-use-websocket';
 import throttle from 'lodash.throttle';
@@ -51,15 +51,13 @@ export function HomeWs() {
         y: e.clientY,
       },
     }));
-  };
 
-  useEffect(() => {
     sendJsonMessageThrottled.current({
       action: 'publish',
       topic: 'cursors',
       message: JSON.stringify(positions),
     });
-  }, [positions]);
+  };
 
   if (lastJsonMessage) {
     return (

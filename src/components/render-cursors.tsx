@@ -1,3 +1,4 @@
+import React from 'react';
 import { Cursor } from './cursor';
 
 interface IRenderCursors {
@@ -9,7 +10,7 @@ const RenderCursors = ({ users, currentUserId }: IRenderCursors) => {
   return (
     Object.keys(users)
       // filter for hiding the current user's cursor
-      // .filter((id) => id !== currentUserId)
+      .filter((id) => id !== currentUserId)
       .map((uuid) => {
         const user = users[uuid];
 
