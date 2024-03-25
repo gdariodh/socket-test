@@ -37,7 +37,7 @@ export function HomeWs() {
           };
         });
       } catch (e) {
-        // setPositions({});
+        setPositions({});
       }
     },
   });
